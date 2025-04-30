@@ -1,0 +1,1 @@
+<template> <div class="uppercase font-black">Shop.co</div></template>
