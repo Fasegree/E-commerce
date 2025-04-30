@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-300 rounded-3xl m-24 p-16">
+  <div class="bg-gray-300 rounded-3xl m-4 p-6 md:m-24 md:p-16">
     <h2 class="uppercase text-2xl font-bold">Browse by dress style</h2>
     <div class="space-y-4 mt-7">
       <div
