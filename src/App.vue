@@ -2,19 +2,15 @@
   <UnderHeader v-if="!isAuthLoading && !currentUser" />
   <Header />
   <RouterView />
-  <Reviews />
-  <DressStyle />
-  <UpToDate />
   <Footer />
+  <Toaster/>
 </template>
 
 <script setup lang="ts">
-import DressStyle from "./components/DressStyle.vue";
-import UpToDate from "./components/UpToDate.vue";
+import Toaster from "./components/ui/toast/Toaster.vue";
 import { useAuth } from "./composable/useAuth";
 import Footer from "./layout/Footer.vue";
 import Header from "./layout/Header.vue";
-import Reviews from "./layout/Reviews.vue";
 import UnderHeader from "./layout/UnderHeader.vue";
 const { currentUser, isAuthLoading } = useAuth();
 </script>

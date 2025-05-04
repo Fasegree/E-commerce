@@ -1,0 +1,177 @@
+<template>
+  <div class="flex gap-3">
+    <!-- images -->
+    <ProductsImages :current-prod="currentProd"/>
+    <!-- /images -->
+    <!-- descriptoin -->
+    <div class="text-left">
+      <p class="text-xl font-bold">{{ currentProd.title }}</p>
+      <div class="flex pt-2 items-center">
+        <StarIcon
+          v-for="i in currentProd.rating"
+          :key="i"
+          class="w-5 h-5 text-yellow-400"
+        />
+        <p class="pl-2">{{ currentProd.rating }}/5</p>
+      </div>
+      <!-- price -->
+      <div class="flex gap-1 md:gap-3 pt-2 items-center">
+        <div class="font-bold text-xl md:text-2xl">
+          ${{ Math.round(currentProd.newPrice ?? currentProd.price) }}
+        </div>
+        <div
+          class="font-bold text-xl md:text-2xl opacity-40 line-through"
+          v-if="currentProd.newPrice"
+        >
+          ${{ Math.round(currentProd.price) }}
+        </div>
+        <div
+          class="py-[6px] px-3 rounded-full bg-red-100 text-red-700"
+          v-if="currentProd.newPrice"
+        >
+          {{
+            Math.round(100 - (currentProd.newPrice * 100) / currentProd.price) *
+            -1
+          }}%
+        </div>
+      </div>
+      <!-- /price -->
+      <p class="pt-6">{{ currentProd.description }}</p>
+      <!-- color -->
+      <div class="pt-6">---------------------------------------</div>
+      <div class="pt-6">Select color</div>
+      <div class="flex gap-1 pt-4">
+        <Button
+          v-for="(color, i) in currentProd.colors"
+          :key="i"
+          class="size-10 rounded-full flex items-center justify-center relative shadow-black"
+          :style="{ backgroundColor: color }"
+          @click="() => toggleSelection('colors', color)"
+        >
+          <CheckBadgeIcon
+            v-if="sendProduct.colors.includes(color)"
+            class="absolute -top-1 -right-1 text-white bg-blue-600 rounded-full size-10"
+          />
+        </Button>
+      </div>
+      <!-- /color -->
+      <div class="pt-6">---------------------------------------</div>
+      <div class="pt-6">Choose size</div>
+      <div class="flex gap-1 pt-4">
+        <Button
+          v-for="(size, i) in currentProd.size"
+          :key="i"
+          @click="() => toggleSelection('size', size)"
+          class="relative"
+        >
+          {{ size }}
+          <CheckBadgeIcon
+            v-if="sendProduct.size.includes(size)"
+            class="absolute -top-1 -right-1 text-white bg-blue-600 rounded-full size-4"
+          />
+        </Button>
+      </div>
+      <div class="pt-6">---------------------------------------</div>
+      <div class="flex gap-3 justify-start items-center pt-6">
+        <div class="flex">
+          <Button
+            class="rounded-r-none"
+            :disabled="countProduct === 1"
+            @click="countProductMinus"
+            >-</Button
+          >
+          <input
+            v-model.number="countProduct"
+            min="1"
+            max="100"
+            type="number"
+            class="border rounded-none w-10 text-center"
+            style="-moz-appearance: textfield; appearance: textfield"
+          />
+          <Button
+            class="rounded-l-none"
+            :disabled="countProduct === 100"
+            @click="countProductPlus"
+            >+</Button
+          >
+        </div>
+        <div>
+          <Button
+            :disabled="
+              countProduct < 1 ||
+              countProduct > 100 ||
+              sendProduct.size.length < 1 ||
+              sendProduct.colors.length < 1
+            "
+            @click="sendData"
+            >Add to Cart</Button
+          >
+        </div>
+      </div>
+    </div>
+    <!-- /descriptoin -->
+  </div>
+</template>
+
+<script setup lang="ts">
+import { products } from "@/assets/productsData/productsData";
+import type { IProduct } from "@/assets/types/Products";
+import { useRoute } from "vue-router";
+import { CheckBadgeIcon, StarIcon } from "@heroicons/vue/24/solid";
+import { ref } from "vue";
+import { toast } from "../ui/toast";
+import ProductsImages from "./ProductsImages.vue";
+import Button from "../ui/button/Button.vue";
+
+const props = defineProps<{ product: IProduct }>();
+
+const route = useRoute();
+const productId = route.params.id as string;
+
+let productFetch;
+if (!props.product) productFetch = products.find((el) => el.id === productId);
+
+const currentProd = props.product ?? productFetch;
+
+const countProduct = ref<number>(1);
+
+const sendProduct = ref<IProduct & { count: number }>({
+  ...currentProd,
+  colors: [currentProd.colors[0]],
+  size: [currentProd.size[0]],
+  count: countProduct.value,
+});
+const toggleSelection = (key: "colors" | "size", value: string) => {
+  sendProduct.value = {...sendProduct.value, [key]: [value]}
+  // const index = sendProduct.value[key].indexOf(value);
+  // if (index === -1) {
+  //   console.log("sendProduct: ");
+  //   sendProduct.value[key].push(value);
+  //   console.log(sendProduct.value);
+
+  // } else {
+  //   console.log("delete");
+  //   sendProduct.value[key].splice(index, 1);
+  //   console.log(sendProduct.value);
+  //   console.log(sendProduct.value[key]);
+  // }
+
+};
+const countProductPlus = () => {
+  countProduct.value = countProduct.value < 100 ? countProduct.value + 1 : 100;
+};
+const countProductMinus = () => {
+  countProduct.value = countProduct.value > 1 ? countProduct.value - 1 : 1;
+};
+const sendData = () => {
+  if (
+    sendProduct.value.colors.length === 0 ||
+    sendProduct.value.size.length === 0
+  )
+    return;
+    sendProduct.value = {...sendProduct.value, count: countProduct.value}
+    /// send my product to cart
+  toast({title:`${sendProduct.value.title} * ${sendProduct.value.count} added to Cart`})
+  return sendProduct;
+};
+</script>

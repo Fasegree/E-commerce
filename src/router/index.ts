@@ -4,6 +4,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Counter from "../components/Counter.vue";
 import LoginPage from "@/views/LoginPage.vue";
 import HomePage from "@/views/HomePage.vue";
+import NotFound404Page from "@/views/NotFound404Page.vue";
+import ProductCardDetiles from "@/components/productCard/ProductCardDetiles.vue";
 
 const routes = [
   {
@@ -18,6 +20,12 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: "/product/:id",
+    name: "ProductCardDetiles",
+    component: ProductCardDetiles,
+    meta: { requiresAuth: false },
+  },
+  {
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
@@ -28,6 +36,11 @@ const routes = [
     name: "Counter",
     component: Counter,
     meta: { requiresAuth: false },
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => NotFound404Page,
   },
 ];
 

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <div class="p-4">
       <h2 class="font-bold uppercase text-4xl text-left">Find lothes</h2>
@@ -30,9 +30,18 @@
   <div class="bg-black text-white flex gap-3 uppercase justify-center py-5">
     <p v-for="brand in brands">{{ brand }}</p>
   </div>
+  <Paginnation :products="products" title="Haoolo"/>
+  <Reviews/>
+  <DressStyle/>
+  <UpToDate/>
 </template>
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
+import Reviews from "./Reviews.vue";
+import DressStyle from "@/components/DressStyle.vue";
+import UpToDate from "@/components/UpToDate.vue";
+import Paginnation from "@/components/pagination/Paginnation.vue";
+import { products } from "@/assets/productsData/productsData";
 
 const stat = [
   {
@@ -49,4 +58,4 @@ const stat = [
   },
 ];
 const brands = ["Versace", "Zara", "Gucci", "Prada", "Calvin Klein"]
-</script>
+</script> -->

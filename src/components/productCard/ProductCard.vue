@@ -1,8 +1,12 @@
 <template>
-  <!-- <img :src="product.imgUrl[0]" :alt="product.title"> -->
-  <div
+  <img
     class="w-[172px] h-[198px] md:w-[295px] md:h-[298px] sm:w-[198px] rounded-xl bg-gray-200"
-  ></div>
+    :src="product.imgUrl[0]"
+    :alt="product.title"
+  />
+  <!-- <div
+    class="w-[172px] h-[198px] md:w-[295px] md:h-[298px] sm:w-[198px] rounded-xl bg-gray-200"
+  ></div> -->
   <div class="pt-4 text-left text-xl font-bold">{{ product.title }}</div>
   <div class="flex pt-2 items-center">
     <StarIcon

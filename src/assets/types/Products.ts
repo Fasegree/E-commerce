@@ -1,4 +1,5 @@
 export interface IProduct {
+  // name_: any;
   id: string;
   imgUrl: string[];
   title: string;
