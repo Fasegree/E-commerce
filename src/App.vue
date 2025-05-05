@@ -1,12 +1,11 @@
 <template>
-  <UnderHeader v-if="!isAuthLoading && !currentUser"/>
-  <Header/>
-  <Counter />
+  <UnderHeader v-if="!isAuthLoading && !currentUser" />
+  <Header />
   <RouterView />
-  <Reviews/>
-  <DressStyle/>
-  <UpToDate/>
-  <Footer/>
+  <Reviews />
+  <DressStyle />
+  <UpToDate />
+  <Footer />
 </template>
 
 <script setup lang="ts">
@@ -17,5 +16,5 @@ import Footer from "./layout/Footer.vue";
 import Header from "./layout/Header.vue";
 import Reviews from "./layout/Reviews.vue";
 import UnderHeader from "./layout/UnderHeader.vue";
-const {currentUser, isAuthLoading} = useAuth()
+const { currentUser, isAuthLoading } = useAuth();
 </script>
