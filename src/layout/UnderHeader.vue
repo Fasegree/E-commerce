@@ -1,7 +1,7 @@
 <template>
-  <div class="z-50 h-5 relative">
+  <div class="fixed z-50 h-5  w-full max-w-[1440px]">
     <div
-      class="fixed bg-black text-white w-[1280px] text-[13px] py-2 shadow-[0px_5px_4px_0px_rgba(17,_12,_46,_0.15)]"
+      class=" bg-black text-white w-full text-[13px] py-2 shadow-[0px_5px_4px_0px_rgba(17,_12,_46,_0.15)]"
     >
       <span
         >Sign up and get 20% off to your first order.
@@ -11,6 +11,8 @@
       </span>
     </div>
   </div>
+  <div class="h-7"></div>
+
 </template>
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
