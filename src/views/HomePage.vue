@@ -12,5 +12,4 @@
 import { products } from "@/assets/productsData/productsData";
 import Paginnation from "@/components/pagination/Paginnation.vue";
 import Home from "@/layout/Home.vue";
-import ListCards from "@/layout/ListCards/ListCards.vue";
 </script>
