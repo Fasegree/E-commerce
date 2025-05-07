@@ -78,8 +78,8 @@ function generateProducts(count = 30): IProduct[] {
         ? parseFloat((Math.random() * 150 + 10).toFixed(2))
         : undefined,
     description: getRandom(sampleDescriptions),
-    colors: getRandomSubset(sampleColors, Math.floor(Math.random() * 3) + 1),
-    size: getRandomSubset(sampleSizes, Math.floor(Math.random() * 4) + 1),
+    colors: getRandomSubset(sampleColors, Math.floor(Math.random() * 8) + 1),
+    size: getRandomSubset(sampleSizes, Math.floor(Math.random() * 5) + 1),
     dressStyle: getRandom(sampleStyles),
     category: getRandom(sampleCategories),
     addDate: new Date(Date.now() - Math.floor(Math.random() * 10000000000)), // случайная дата
