@@ -73,28 +73,7 @@
       </div>
       <div class="pt-6">---------------------------------------</div>
       <div class="flex gap-3 justify-start items-center pt-6">
-        <div class="flex">
-          <Button
-            class="rounded-r-none"
-            :disabled="countProduct === 1"
-            @click="countProductMinus"
-            >-</Button
-          >
-          <input
-            v-model.number="countProduct"
-            min="1"
-            max="100"
-            type="number"
-            class="border rounded-none w-10 text-center"
-            style="-moz-appearance: textfield; appearance: textfield"
-          />
-          <Button
-            class="rounded-l-none"
-            :disabled="countProduct === 100"
-            @click="countProductPlus"
-            >+</Button
-          >
-        </div>
+        <ButtonsMinusPlus v-model:countProduct="countProduct"/>
         <div>
           <Button
             :disabled="
@@ -122,6 +101,7 @@ import { ref } from "vue";
 import { toast } from "../ui/toast";
 import ProductsImages from "./ProductsImages.vue";
 import Button from "../ui/button/Button.vue";
+import ButtonsMinusPlus from "./ButtonsMinusPlus.vue";
 
 const props = defineProps<{ product: IProduct }>();
 
@@ -157,12 +137,7 @@ const toggleSelection = (key: "colors" | "size", value: string) => {
   // }
 
 };
-const countProductPlus = () => {
-  countProduct.value = countProduct.value < 100 ? countProduct.value + 1 : 100;
-};
-const countProductMinus = () => {
-  countProduct.value = countProduct.value > 1 ? countProduct.value - 1 : 1;
-};
+
 const sendData = () => {
   if (
     sendProduct.value.colors.length === 0 ||
