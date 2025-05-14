@@ -1,7 +1,7 @@
 <template>
   <div class="flex gap-3">
     <!-- images -->
-    <ProductsImages :current-prod="currentProd"/>
+    <ProductsImages :current-prod="currentProd" />
     <!-- /images -->
     <!-- descriptoin -->
     <div class="text-left">
@@ -46,10 +46,10 @@
           :key="i"
           class="size-10 rounded-full flex items-center justify-center relative shadow-black"
           :style="{ backgroundColor: color }"
-          @click="() => toggleSelection('colors', color)"
+          @click="() => toggleSelection('color', color)"
         >
           <CheckBadgeIcon
-            v-if="sendProduct.colors.includes(color)"
+            v-if="sendProduct.color.includes(color)"
             class="absolute -top-1 -right-1 text-white bg-blue-600 rounded-full size-10"
           />
         </Button>
@@ -73,14 +73,14 @@
       </div>
       <div class="pt-6">---------------------------------------</div>
       <div class="flex gap-3 justify-start items-center pt-6">
-        <ButtonsMinusPlus v-model:countProduct="countProduct"/>
+        <ButtonsMinusPlus v-model:countProduct="inCart" />
         <div>
           <Button
             :disabled="
-              countProduct < 1 ||
-              countProduct > 100 ||
+              inCart < 1 ||
+              inCart > 100 ||
               sendProduct.size.length < 1 ||
-              sendProduct.colors.length < 1
+              sendProduct.color.length < 1
             "
             @click="sendData"
             >Add to Cart</Button
@@ -94,7 +94,7 @@
 
 <script setup lang="ts">
 import { products } from "@/assets/productsData/productsData";
-import type { IProduct } from "@/assets/types/Products";
+import type { IProduct, IProductInCart } from "@/assets/types/Products";
 import { useRoute } from "vue-router";
 import { CheckBadgeIcon, StarIcon } from "@heroicons/vue/24/solid";
 import { ref } from "vue";
@@ -102,27 +102,29 @@ import { toast } from "../ui/toast";
 import ProductsImages from "./ProductsImages.vue";
 import Button from "../ui/button/Button.vue";
 import ButtonsMinusPlus from "./ButtonsMinusPlus.vue";
+import { useCartStore } from "@/stores/cart";
 
 const props = defineProps<{ product: IProduct }>();
 
 const route = useRoute();
 const productId = route.params.id as string;
 
+const cartStore = useCartStore();
 let productFetch;
 if (!props.product) productFetch = products.find((el) => el.id === productId);
 
 const currentProd = props.product ?? productFetch;
 
-const countProduct = ref<number>(1);
+const inCart = ref<number>(1);
 
-const sendProduct = ref<IProduct & { count: number }>({
+const sendProduct = ref<IProductInCart>({
   ...currentProd,
-  colors: [currentProd.colors[0]],
+  color: [currentProd.colors[0]],
   size: [currentProd.size[0]],
-  count: countProduct.value,
+  inCart: inCart.value,
 });
-const toggleSelection = (key: "colors" | "size", value: string) => {
-  sendProduct.value = {...sendProduct.value, [key]: [value]}
+const toggleSelection = (key: "color" | "size", value: string) => {
+  sendProduct.value = { ...sendProduct.value, [key]: [value] };
   // const index = sendProduct.value[key].indexOf(value);
   // if (index === -1) {
   //   console.log("sendProduct: ");
@@ -135,18 +137,24 @@ const toggleSelection = (key: "colors" | "size", value: string) => {
   //   console.log(sendProduct.value);
   //   console.log(sendProduct.value[key]);
   // }
-
 };
 
 const sendData = () => {
   if (
-    sendProduct.value.colors.length === 0 ||
+    sendProduct.value.color.length === 0 ||
     sendProduct.value.size.length === 0
   )
     return;
-    sendProduct.value = {...sendProduct.value, count: countProduct.value}
-    /// send my product to cart
-  toast({title:`${sendProduct.value.title} * ${sendProduct.value.count} added to Cart`})
+  sendProduct.value = { ...sendProduct.value, inCart: inCart.value };
+  cartStore.addToCart({
+    ...sendProduct.value,
+  });
+  toast({
+    title: `${sendProduct.value.title} * ${sendProduct.value.inCart} added to Cart`,
+  });
+  console.log("sendProduct: ", sendProduct.value);
+  console.log("cartStore: ", cartStore.items);
+
   return sendProduct;
 };
 </script>
