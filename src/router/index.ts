@@ -6,6 +6,7 @@ import LoginPage from "@/views/LoginPage.vue";
 import HomePage from "@/views/HomePage.vue";
 import NotFound404Page from "@/views/NotFound404Page.vue";
 import ProductCardDetiles from "@/components/productCard/ProductCardDetiles.vue";
+import CartPage from "@/views/CartPage.vue";
 
 const routes = [
   {
@@ -35,6 +36,12 @@ const routes = [
     path: "/counter",
     name: "Counter",
     component: Counter,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: CartPage,
     meta: { requiresAuth: false },
   },
   {
